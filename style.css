@@ -1,0 +1,194 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #FF5A5F;
+}
+
+#container {
+    width: 80%;
+    margin: 25px auto 25px auto;
+    padding: 50px 50px 50px 50px;
+    background-color: white;
+}
+
+#buttonContainer {
+    background-color: white;
+    padding: 20px;
+    margin: 0 auto;
+    text-align: center;
+    /*border-width:2px;
+    border-style:solid;
+    border-color:rgb(180, 180, 180);
+    border-radius: 25px;*/
+}
+
+button{
+    height: 44px;
+    width: 120px;
+    margin: 0px 20px;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    color: white;
+    background-color: #fc8f93;
+    border-style: none;
+    border-radius: 10px;
+    outline: none;
+}
+
+
+button::-moz-focus-inner {
+  border: 0;
+}
+
+
+
+button:hover{
+    background: #FF5A5F;
+}
+
+#chartContainer {
+    background-color: white;
+    /*border-width:2px;
+    border-style:solid;
+    border-color:rgb(180, 180, 180);
+    border-radius: 25px;*/
+}
+
+h1 {
+    margin-bottom: 25px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+h2 {
+    margin-top: 30px;
+    margin-left: 20px;
+    font-size: 14px;
+}
+
+p {
+    margin-bottom: 25px;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+/* Chart styles */
+
+svg {
+    display: block;
+    margin: 10px;
+    background-color: white;
+}
+
+circle {
+    fill: #fc8f93;
+    stroke: #FF5A5F;
+    stroke-width: 3px;
+}
+
+input[type="range"]{
+    display: block;
+    margin: auto auto 50px auto;
+}
+
+.slider {
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    width: 100%; /* Full-width */
+    height: 5px;
+    border-radius: 5px;  
+    background: #d3d3d3; /* Grey background */
+    outline: none; /* Remove outline */
+    opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+    opacity: 1; /* Fully shown on mouse-over */
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%; 
+    background: rgb(255, 0, 0);
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgb(255, 0, 0);
+    cursor: pointer;
+}
+
+#backButton {
+    cursor: pointer;
+}
+
+#backButton rect {
+    fill: rgb(175, 240, 91);
+}
+
+#backButton text {
+    font-family: Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    fill: black;
+}
+
+#backButton:hover rect {
+    fill: rgb(26, 199, 194);
+}
+
+#backButton:hover text {
+    fill: white;
+}
+
+.unclickable {
+    pointer-events: none;
+}
+
+.ticks {
+    font: 10px sans-serif;
+  }
+  
+  .track,
+  .track-inset,
+  .track-overlay {
+    stroke-linecap: round;
+  }
+  
+  .track {
+    stroke: #000;
+    stroke-opacity: 0.3;
+    stroke-width: 10px;
+  }
+  
+  .track-inset {
+    stroke: #ddd;
+    stroke-width: 8px;
+  }
+  
+  .track-overlay {
+    pointer-events: stroke;
+    stroke-width: 50px;
+    stroke: transparent;
+    cursor: crosshair;
+  }
+  
+  .handle {
+    fill: #fff;
+    stroke: #000;
+    stroke-opacity: 0.5;
+    stroke-width: 1.25px;
+  }
