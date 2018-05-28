@@ -7,7 +7,7 @@ class D3NodeManager{
         this.actions = [];
         this.attr = [];
         this.transitions = [];
-        this.actualAttr = ["avg", "price"];
+        this.actualAttr = scales.PRICE;
     }
 
     update(){
@@ -52,31 +52,10 @@ class D3NodeManager{
 
     changeRadiusFactor(newAttr){
         if(newAttr) this.actualAttr = newAttr;
-        this.remap("radius", this.actualAttr); 
-    }
-
-    remap(oldAttr, newAttr){
-        const getAttr = (obj ,attrs) => {
-            let result = obj;
-            if(!attrs) console.log(attrs);
-            for(let attr of attrs){
-                result = result[attr];
-            }
-            return result;
-        };
-
-        this.dataNodes.forEach((d, i) => {
-            d[oldAttr] =  getAttr(d, newAttr);;
+        this.dataNodes = this.dataNodes.filter((d) => {
+            return getAttr(d, this.actualAttr.attr);
         });
-
-        if(oldAttr === "radius") { 
-            const toDelete = [];
-            this.dataNodes.forEach((d, i) => {
-                if(!d.radius) toDelete.push(i);
-            });
-            toDelete.sort((a,b) => b - a).forEach((i) => this.dataNodes.splice(i,1)); 
-            initScaleSqrt("r",  this.dataNodes);
-        }
+        initScaleSqrt(this.actualAttr,  this.dataNodes);
     }
 
     addData(data, center){
@@ -134,8 +113,8 @@ class D3NodeManager{
 
     _calcMaxRadius(center){
         return this.dataNodes.reduce((acc, crr) => {
-            const radiusY = Math.abs(center.y - crr.y) + scaleSqrt("r", crr.radius);
-            const radiusX = Math.abs(center.x - crr.x) + scaleSqrt("r", crr.radius);
+            const radiusY = Math.abs(center.y - crr.y) + scaleSqrt(this.actualAttr, crr);
+            const radiusX = Math.abs(center.x - crr.x) + scaleSqrt(this.actualAttr, crr);
             if(acc.radiusX < radiusX) acc.radiusX = radiusX;
             if(acc.radiusY < radiusY) acc.radiusY = radiusY;
             return acc;
