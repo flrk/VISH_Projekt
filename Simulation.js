@@ -57,7 +57,7 @@ class Simulation{
 
     _forces(){
         const radius = (d) => {
-            return scaleSqrt(d3NodeManager.actualAttr, d) + d.border;
+            return d.radius + d.border;
         }
         var boxForce = this.boundedBox()
             .bounds([[10, 10], [this.frame.width - 10, this.frame.height - 10]])

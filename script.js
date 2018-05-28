@@ -42,8 +42,8 @@ function initSimulationWithNodes(){
 }
 
 function initAttrAndListener(){
-    d3NodeManager.setTransition('r', 100,  d => scaleSqrt(d3NodeManager.actualAttr, d));
-    d3NodeManager.setAttr('r', d => scaleSqrt(d3NodeManager.actualAttr, d));
+    d3NodeManager.setTransition('r', 100, d =>  d.radius );//d => scaleSqrt(d3NodeManager.actualAttr, d));
+    d3NodeManager.setAttr('r', d => d.radius ); //scaleSqrt(d3NodeManager.actualAttr, d));
     d3NodeManager.setAttr('cx', d => d.x);
     d3NodeManager.setAttr('cy', d => d.y);
 
@@ -104,7 +104,7 @@ function initInputFields(){
     });
 
     createChechbox(buttonContainerID, "Absolute?", {}, () => {
-        scaleAbsolute = !scaleAbsolute;
+        d3NodeManager.toggleRadiusType();
         sim.applyForces();
     })
 }

@@ -8,6 +8,7 @@ class D3NodeManager{
         this.attr = [];
         this.transitions = [];
         this.actualAttr = scales.PRICE;
+        this.isRelative = true;
     }
 
     update(){
@@ -50,12 +51,24 @@ class D3NodeManager{
         this.actions = [{event, listener}];
     }
 
+    toggleRadiusType(){
+        this.isRelative  = !this.isRelative;
+        this.calcRadius();
+    }
+
+    calcRadius(){
+        this.dataNodes.forEach((d) => {
+            d.radius = scaleSqrt(this.actualAttr, d, this.isRelative)
+        });
+    }
+
     changeRadiusFactor(newAttr){
         if(newAttr) this.actualAttr = newAttr;
         this.dataNodes = this.dataNodes.filter((d) => {
             return getAttr(d, this.actualAttr.attr);
         });
         initScaleSqrt(this.actualAttr,  this.dataNodes);
+        this.calcRadius();
     }
 
     addData(data, center){

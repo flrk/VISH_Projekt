@@ -1,4 +1,3 @@
-let scaleAbsolute = false;
 const scales = {
     PRICE: {
         attr: ["avg", "price"],
@@ -47,11 +46,11 @@ function initScaleSqrt(scale, data){
 }
 
 // scaled das attribute nach einem bestimmten type
-function scaleSqrt(scale, dataObj){
+function scaleSqrt(scale, dataObj, scaleRelative){
     if(!scale) console.log(scale, dataObj)
     const value = getAttr( dataObj, scale.attr);
     const { range } = scale;
-    const { min, max } = scaleAbsolute ? scale.absolute : scale.relative;
+    const { min, max } = scaleRelative ? scale.relative : scale.absolute;
 
     return d3.scaleSqrt()
                 .domain([min, max])
