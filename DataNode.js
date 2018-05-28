@@ -1,4 +1,5 @@
 let cacheData;
+
 class DataNode{
     static async loadJSON(path, forceReload = false){
         return new Promise( resolve => {
