@@ -35,7 +35,7 @@ function initSimulationWithNodes(){
     // sogesehen die Verknüpfung der DataNodes mit d3
     // Dem Konstruktor muss der Name des eltern-Elementes sowie der KlassenName für die Visualiserung übergeben werden
     d3NodeManager = new D3NodeManager(d3, 'svg', 'circle');
-    initScaleSqrt(d3NodeManager.actualAttr, dataNodes);
+    d3NodeManager.changeRadiusFactor(scales.PRICE);
 
     d3NodeManager.updateDataSet(dataNodes, sim.getCenter());
     sim.createForceSimulation(d3NodeManager.getData());
@@ -105,6 +105,7 @@ function initInputFields(){
 
     createChechbox(buttonContainerID, "Absolute?", {}, () => {
         scaleAbsolute = !scaleAbsolute;
+        sim.applyForces();
     })
 }
 
