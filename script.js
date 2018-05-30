@@ -17,6 +17,7 @@ loadData();
 async function loadData(){
     await DataNode.loadJSON(dataFile);
     initAbsoluteRanges(DataNode.filterData((d) =>(new Date(d.date).getTime() < timeJanuar2017)))
+    DataNode.initScale();
     dataNodes = DataNode.filterData((d) =>(new Date(d.date).getTime() < timeJanuar2014));
     start();   
 }
