@@ -5,7 +5,7 @@ const timeOneMonth = 2592000 * 1000;
 const steps = (timeJanuar2017 - timeJanuar2014)/timeOneDay;
 
 const dataFile = "Dataset.json";
-const containerID = "#container"
+const containerID = "#container";
 const chartContainerID = "#chartContainer";
 const buttonContainerID = "#buttonContainer";
 
@@ -16,9 +16,13 @@ loadData();
 
 async function loadData(){
     await DataNode.loadJSON(dataFile);
+<<<<<<< HEAD
     initAbsoluteRanges(DataNode.filterData((d) =>(new Date(d.date).getTime() < timeJanuar2017)))
+=======
+>>>>>>> 7eab07d6c97b7adff19ae1c26d9dedea1915e0a3
     DataNode.initScale();
     dataNodes = DataNode.filterData((d) =>(new Date(d.date).getTime() < timeJanuar2014));
+    initScaleSqrt("r", dataNodes, [10, 40]);
     start();   
 }
 
@@ -36,17 +40,18 @@ function initSimulationWithNodes(){
     // sogesehen die Verknüpfung der DataNodes mit d3
     // Dem Konstruktor muss der Name des eltern-Elementes sowie der KlassenName für die Visualiserung übergeben werden
     d3NodeManager = new D3NodeManager(d3, 'svg', 'circle');
-    d3NodeManager.changeRadiusFactor(scales.PRICE);
-
+    
     d3NodeManager.updateDataSet(dataNodes, sim.getCenter());
     sim.createForceSimulation(d3NodeManager.getData());
 }
 
 function initAttrAndListener(){
-    d3NodeManager.setTransition('r', 100, d =>  d.radius );//d => scaleSqrt(d3NodeManager.actualAttr, d));
-    d3NodeManager.setAttr('r', d => d.radius ); //scaleSqrt(d3NodeManager.actualAttr, d));
+    d3NodeManager.setTransition('r', 100,  d => scaleSqrt("r", d.radius));
+    d3NodeManager.setAttr('r', d => scaleSqrt("r", d.radius));
     d3NodeManager.setAttr('cx', d => d.x);
     d3NodeManager.setAttr('cy', d => d.y);
+    d3NodeManager.setAttr('fill', d => d.color);
+    d3NodeManager.setAttr('stroke', d => d.color);
 
     // setzt Action listener wie z.B. click
     d3NodeManager.setAction('click', (d) => {
@@ -85,29 +90,28 @@ function initInputFields(){
     },  sliderWidth);
 
     createButton(buttonContainerID, "Preis", buttonConfig, () => {
-        d3NodeManager.changeRadiusFactor(scales.PRICE);
+        initScaleSqrt("r", dataNodes, [10,40]);
+        d3NodeManager.changeRadiusFactor(["avg", "price"]);
         sim.applyForces();
     });
 
     createButton(buttonContainerID, "Betten", buttonConfig, () => {
-        d3NodeManager.changeRadiusFactor(scales.BEDS);
+        initScaleSqrt("r", dataNodes , [5,30]);
+        d3NodeManager.changeRadiusFactor(["avg", "bedrooms"]);
         sim.applyForces();
     });
 
     createButton(buttonContainerID, "Zufriendenheit", buttonConfig, () => {
-        d3NodeManager.changeRadiusFactor(scales.STATIFICATION);
+        initScaleSqrt("r", dataNodes, [5,20]);
+        d3NodeManager.changeRadiusFactor(["avg", "satisfaction"]);
         sim.applyForces();
     });
 
     createButton(buttonContainerID, "Beherbergungen", buttonConfig, () => {
-        d3NodeManager.changeRadiusFactor(scales.ACCOMMODATES);
+        initScaleSqrt("r", dataNodes, [5,30]);
+        d3NodeManager.changeRadiusFactor(["avg", "accommodates"]);
         sim.applyForces();
     });
-
-    createChechbox(buttonContainerID, "Absolute?", {}, () => {
-        d3NodeManager.toggleRadiusType();
-        sim.applyForces();
-    })
 }
 
 function initSVGAndFrame(){

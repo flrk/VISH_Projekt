@@ -85,8 +85,8 @@ svg {
 }
 
 circle {
-    fill: #fc8f93;
-    stroke: #FF5A5F;
+    /*fill: #fc8f93;
+    stroke: #FF5A5F;*/
     stroke-width: 3px;
 }
 
