@@ -56,16 +56,19 @@ class Simulation{
 
 
     _forces(){
-            var boxForce = this.boundedBox()
+        const radius = (d) => {
+            return d.radius + d.border;
+        }
+        var boxForce = this.boundedBox()
             .bounds([[10, 10], [this.frame.width - 10, this.frame.height - 10]])
-            .size(function (d) { return [scaleSqrt("r",d.radius) + d.border, scaleSqrt("r",d.radius) + d.border] })
+            .size(function (d) { return [radius(d), radius(d)]})
 
         this.forceSimulation
             .force('charge', this.d3.forceManyBody().strength(this._chargeStrength))
             .force('center', this.d3.forceCenter(this.center.x, this.center.y))
             .force('box', boxForce)
             .force('collision', this.d3.forceCollide().radius(function(d) {
-                return scaleSqrt("r", d.radius)  + d.border;
+                return radius(d);
             }));
             
     }

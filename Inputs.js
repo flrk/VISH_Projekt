@@ -25,3 +25,19 @@ function createSlider(parent, text, attrs, onSlide, width){
     //slider.text(text);
     slider.on('input', onSlide);
 }
+
+function createChechbox(parent, text, attrs, listener){
+    d3.select(parent)
+    .append('label')
+    .property('for', 'test')
+    .text(text);
+
+    
+    let checkBox = d3.select(parent)
+    .append('input')
+    .property('type', 'checkBox')
+    .property("name", 'test')
+
+
+    checkBox.on('click', listener);
+}
