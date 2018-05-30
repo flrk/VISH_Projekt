@@ -5,7 +5,7 @@ const timeOneMonth = 2592000 * 1000;
 const steps = (timeJanuar2017 - timeJanuar2014)/timeOneDay;
 
 const dataFile = "Dataset.json";
-const containerID = "#container"
+const containerID = "#container";
 const chartContainerID = "#chartContainer";
 const buttonContainerID = "#buttonContainer";
 
@@ -16,6 +16,7 @@ loadData();
 
 async function loadData(){
     await DataNode.loadJSON(dataFile);
+    DataNode.initScale();
     dataNodes = DataNode.filterData((d) =>(new Date(d.date).getTime() < timeJanuar2014));
     initScaleSqrt("r", dataNodes, [10, 40]);
     start();   
@@ -45,6 +46,8 @@ function initAttrAndListener(){
     d3NodeManager.setAttr('r', d => scaleSqrt("r", d.radius));
     d3NodeManager.setAttr('cx', d => d.x);
     d3NodeManager.setAttr('cy', d => d.y);
+    d3NodeManager.setAttr('fill', d => d.color);
+    d3NodeManager.setAttr('stroke', d => d.color);
 
     // setzt Action listener wie z.B. click
     d3NodeManager.setAction('click', (d) => {

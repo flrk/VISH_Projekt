@@ -1,5 +1,8 @@
 let cacheData;
+let colorScale;
+
 class DataNode{
+    
     static async loadJSON(path, forceReload = false){
         return new Promise( resolve => {
                 if(cacheData && !forceReload) {
@@ -18,6 +21,14 @@ class DataNode{
                 });
             }
         });
+    }
+
+    static initScale() {
+        var max = DataNode.filterData((d) => new Date(d.date).getTime() < timeJanuar2017).length;
+        
+        colorScale = d3.scaleOrdinal(d3.schemeCategory20);
+
+        cacheData.forEach(d => d.color = colorScale(d.city));
     }
 
     static filterData(filter){
