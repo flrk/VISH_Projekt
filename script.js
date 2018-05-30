@@ -16,9 +16,10 @@ loadData();
 
 async function loadData(){
     await DataNode.loadJSON(dataFile);
-    dataNodes = DataNode.filterData((d) =>(new Date(d.date).getTime() < timeJanuar2014));
     DataNode.initScale();
-    initAbsoluteRanges(dataNodes = DataNode.filterData((d) =>(new Date(d.date).getTime() < timeJanuar2017)));
+    
+    dataNodes = DataNode.filterData((d) =>(new Date(d.date).getTime() < timeJanuar2014));
+    initAbsoluteRanges(DataNode.filterData((d) =>(new Date(d.date).getTime() < timeJanuar2017)));
     start();   
 }
 
@@ -42,8 +43,8 @@ function initSimulationWithNodes(){
 }
 
 function initAttrAndListener(){
-    d3NodeManager.setTransition('r', 100,  d => scaleSqrt("r", d.radius));
-    d3NodeManager.setAttr('r', d => scaleSqrt("r", d.radius));
+    d3NodeManager.setTransition('r', 100,  d => d.radius);
+    d3NodeManager.setAttr('r', d => d.radius);
     d3NodeManager.setAttr('cx', d => d.x);
     d3NodeManager.setAttr('cy', d => d.y);
     d3NodeManager.setAttr('fill', d => d.color);
@@ -86,28 +87,29 @@ function initInputFields(){
     },  sliderWidth);
 
     createButton(buttonContainerID, "Preis", buttonConfig, () => {
-        initScaleSqrt("r", dataNodes, [10,40]);
-        d3NodeManager.changeRadiusFactor(["avg", "price"]);
+        d3NodeManager.changeRadiusFactor(scales.PRICE);
         sim.applyForces();
     });
 
     createButton(buttonContainerID, "Betten", buttonConfig, () => {
-        initScaleSqrt("r", dataNodes , [5,30]);
-        d3NodeManager.changeRadiusFactor(["avg", "bedrooms"]);
+        d3NodeManager.changeRadiusFactor(scales.BEDS);
         sim.applyForces();
     });
 
     createButton(buttonContainerID, "Zufriendenheit", buttonConfig, () => {
-        initScaleSqrt("r", dataNodes, [5,20]);
-        d3NodeManager.changeRadiusFactor(["avg", "satisfaction"]);
+        d3NodeManager.changeRadiusFactor(scales.STATIFICATION);
         sim.applyForces();
     });
 
     createButton(buttonContainerID, "Beherbergungen", buttonConfig, () => {
-        initScaleSqrt("r", dataNodes, [5,30]);
-        d3NodeManager.changeRadiusFactor(["avg", "accommodates"]);
+        d3NodeManager.changeRadiusFactor(scales.ACCOMMODATES);
         sim.applyForces();
     });
+
+    createChechbox(buttonContainerID, "Absolute?", {}, () => {
+        d3NodeManager.toggleRadiusType();
+        sim.applyForces();
+    })
 }
 
 function initSVGAndFrame(){
