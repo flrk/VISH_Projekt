@@ -85,7 +85,7 @@ function initInputFields(){
         d3NodeManager.updateDataSet(dataNodes, sim.getCenter());
         sim.setNodes(d3NodeManager.getData());
     },  sliderWidth);
-
+/*
     createButton(buttonContainerID, "Preis", buttonConfig, () => {
         d3NodeManager.changeRadiusFactor(scales.PRICE);
         sim.applyForces();
@@ -110,6 +110,32 @@ function initInputFields(){
         d3NodeManager.toggleRadiusType();
         sim.applyForces();
     })
+*/
+    const radioPreis = {
+        name: "Preis",
+        checked: true,
+        scale: scales.PRICE
+    }
+
+    createRadio(buttonContainerID, "Attribute", [
+        radioPreis, 
+        {
+            name: "Betten",
+            scale: scales.BEDS
+        },
+        {
+            name: "Zufriendenheit",
+            scale: scales.STATIFICATION
+        },
+        {
+            name: "Beherbergungen",
+            scale: scales.ACCOMMODATES
+        }],
+        (scale) => {
+            d3NodeManager.changeRadiusFactor(scale);
+            sim.applyForces();
+        }
+    );
 }
 
 function initSVGAndFrame(){

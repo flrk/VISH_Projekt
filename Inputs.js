@@ -38,6 +38,25 @@ function createChechbox(parent, text, attrs, listener){
     .property('type', 'checkBox')
     .property("name", 'test')
 
-
     checkBox.on('click', listener);
+}
+
+function createRadio(parent, menuName, btns, fnc){
+    const header = d3.select(parent).append('h3').text(menuName);
+    for(let btn of btns){
+        const label = d3.select(parent)
+            .append('label')
+            .text(btn.name)
+            .attr('class', 'container')
+            
+        
+        const checkbox = label.append('input')
+            .property('type', 'radio')
+            .property('name', menuName)
+            .on('click', () => {fnc(btn.scale)});
+
+        label.append('span').attr('class', 'checkmark');
+
+        if(btn.checked) checkbox.property("checked", "true");
+    }
 }
