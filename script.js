@@ -9,24 +9,31 @@ const containerID = "#container";
 const chartContainerID = "#chartContainer";
 const buttonContainerID = "#buttonContainer";
 
-let sim, d3NodeManager, dataNodes, frame; 
+let sim, d3NodeManager, dataNodes, frame, tooltip; 
 
 initSVGAndFrame();
 loadData();
 
 async function loadData(){
     await DataNode.loadJSON(dataFile);
-    DataNode.initScale();
-    
+    DataNode.initColorScale();
     dataNodes = DataNode.filterData((d) =>(new Date(d.date).getTime() < timeJanuar2014));
     initAbsoluteRanges(DataNode.filterData((d) =>(new Date(d.date).getTime() < timeJanuar2017)));
     start();   
 }
 
 function start(){
+    initTooltip();
     initSimulationWithNodes();
     initAttrAndListener();
     initInputFields();
+}
+
+function initTooltip(){
+    tooltip = d3.select("#chartContainer")
+                .append("div")	
+                .attr("class", "tooltip")               
+                .style("opacity", 0.5);
 }
 
 function initSimulationWithNodes(){
@@ -48,9 +55,10 @@ function initAttrAndListener(){
     d3NodeManager.setAttr('cx', d => d.x);
     d3NodeManager.setAttr('cy', d => d.y);
     d3NodeManager.setAttr('fill', d => d.color);
+    d3NodeManager.setAttr('fill-opacity', 0.6);
     d3NodeManager.setAttr('stroke', d => d.color);
-
-    // setzt Action listener wie z.B. click
+    
+   // setzt Action listener wie z.B. click
     d3NodeManager.setAction('click', (d) => {
         sim.applyForces();
     });

@@ -72,7 +72,7 @@ class Simulation{
             }));
             
     }
-
+    //berechnet Kollision mit dem SVG Rand
     boundedBox() {
         var nodes, sizes
         var bounds
