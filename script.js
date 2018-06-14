@@ -111,14 +111,16 @@ function initInputFields(){
         sim.applyForces();
     })
 */
-    const radioPreis = {
+
+
+    const radioPrice = {
         name: "Preis",
         checked: true,
         scale: scales.PRICE
     }
 
     createRadio(buttonContainerID, "Attribute", [
-        radioPreis, 
+        radioPrice, 
         {
             name: "Betten",
             scale: scales.BEDS
@@ -136,6 +138,48 @@ function initInputFields(){
             sim.applyForces();
         }
     );
+
+    
+    createRadio(buttonContainerID, "Art", [
+        {
+            name: "Mittelwert",
+            checked: true,
+            scale: "avg"
+        },
+        {
+            name: "Maximal",
+            scale: "max"
+        },
+        {
+            name: "Minimal",
+            scale: "min"
+        }],
+        (scaleType) => {
+            d3NodeManager.actualAttr.attr[0] = scaleType;
+            d3NodeManager.changeRadiusFactor();
+            sim.applyForces();
+        }
+    );
+
+    createRadio(buttonContainerID, "Skalierung", [
+        {
+            name: "Relativ",
+            checked: true,
+            scale: true
+        },
+        {
+            name: "Absolut",
+            scale: false
+        }],
+        (isRelative) => {
+            if(isRelative !== d3NodeManager.isRelative){ 
+                d3NodeManager.toggleRadiusType();
+                sim.applyForces();
+            }
+        }
+    );
+
+   
 }
 
 function initSVGAndFrame(){

@@ -22,8 +22,28 @@ function createSlider(parent, text, attrs, onSlide, width){
         slider.attr(key, attrs[key]);
     });
 
-    //slider.text(text);
-    slider.on('input', onSlide);
+     //slider.text(text);
+     slider.on('input', onSlide);
+
+
+
+    let wrapper = d3.select(parent)
+    .append('div')
+    .attr('class', 'sliderWrapper')
+    .style('width', width);
+    
+
+    wrapper.append('span')
+            .text('2014');
+
+    wrapper.append('span')
+            .text('2015');
+
+    wrapper.append('span')
+            .text('2016');
+
+    wrapper.append('span')
+            .text('2017');
 }
 
 function createChechbox(parent, text, attrs, listener){
@@ -42,9 +62,11 @@ function createChechbox(parent, text, attrs, listener){
 }
 
 function createRadio(parent, menuName, btns, fnc){
-    const header = d3.select(parent).append('h3').text(menuName);
+    const wrapper = d3.select(parent).append('div').attr('class', 'formfield');
+    wrapper.append('h3').text(menuName);
+
     for(let btn of btns){
-        const label = d3.select(parent)
+        const label = wrapper
             .append('label')
             .text(btn.name)
             .attr('class', 'container')

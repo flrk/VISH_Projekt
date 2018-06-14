@@ -63,7 +63,12 @@ class D3NodeManager{
     }
 
     changeRadiusFactor(newAttr){
-        if(newAttr) this.actualAttr = newAttr;
+        if(newAttr){
+            if(this.actualAttr.attr[0] !== newAttr.attr[0]){
+                newAttr.attr[0] = this.actualAttr.attr[0];
+            }
+            this.actualAttr = newAttr;
+        } 
         this.dataNodes = this.dataNodes.filter((d) => {
             return getAttr(d, this.actualAttr.attr);
         });
