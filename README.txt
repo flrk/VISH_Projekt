@@ -1,4 +1,4 @@
-# VISH_Projekt
+
 Projekt Name: Evolution of Airbnb over time
 
 Team Members: Lennard Rössig, Florian Rückauf
