@@ -107,7 +107,6 @@ function initInputFields(){
         dataNodes = DataNode.filterData((d) => {
             return (new Date(d.date).getTime() < filterDate.getTime());
         });
-          
         d3NodeManager.updateDataSet(dataNodes, sim.getCenter());
         sim.setNodes(d3NodeManager.getData());
     },  sliderWidth);

@@ -18,16 +18,23 @@ const scales = {
 }
 
 function initAbsoluteRanges(data){
+    const scaleTypes = ["min", "max", "avg"];
+    
     Object.keys(scales).forEach((key) => {
-        scales[key].absolute = data.reduce((acc, crr) => {
-            if(acc.min > getAttribute(crr, scales[key].attr) && getAttribute(crr, scales[key].attr)) acc.min = getAttribute(crr, scales[key].attr);
-            if(acc.max < getAttribute(crr, scales[key].attr)) acc.max = getAttribute(crr, scales[key].attr);
-            return acc;
-        }, {
-            min: Number.MAX_VALUE,
-            max: Number.MIN_VALUE
-        })
-    });
+        scales[key].absolute = {};
+        scaleTypes.forEach((type) => {
+            scales[key].absolute[type] = data.reduce((acc, crr) => {
+                const attribute = getAttribute(crr, [type, scales[key].attr[1]]);
+                if(acc.min > attribute && attribute && attribute > 0) acc.min = attribute;
+                if(acc.max < attribute && attribute !== Number.MAX_SAFE_INTEGER) acc.max = attribute;
+                return acc;
+            }, {
+                min: Number.MAX_VALUE,
+                max: Number.MIN_VALUE
+            })
+        });
+    })
+    
     console.log(scales);
 }
 
@@ -50,7 +57,7 @@ function scaleSqrt(scale, dataObj, scaleRelative){
     if(!scale) console.log(scale, dataObj)
     const value = getAttribute( dataObj, scale.attr);
     const { range } = scale;
-    const { min, max } = scaleRelative ? scale.relative : scale.absolute;
+    const { min, max } = scaleRelative ? scale.relative : scale.absolute[scale.attr[0]];
 
     return d3.scaleSqrt()
                 .domain([min, max])

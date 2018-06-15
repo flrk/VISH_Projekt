@@ -61,6 +61,11 @@ class DataNode{
                     for(let key of keys){
                         acc[crr.city].amount.room_type[key] = acc[crr.city].amount.room_type[key] + crr.amount.room_type[key];
                     }
+
+                    const timestampDate = new Date(acc[crr.city].date).getTime();
+                    const timestampNewDate = new Date(crr.date).getTime();
+                    if(timestampDate < timestampNewDate) acc[crr.city].date = crr.date;
+
                 }
                 return acc;
             }, {});
