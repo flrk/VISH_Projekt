@@ -63,6 +63,24 @@ function initAttrAndListener(){
         sim.applyForces();
     });
 
+    d3NodeManager.setAction('mouseover', (d) => {
+        tooltip.transition()        
+                .duration(200)      
+                .style("opacity", 1);
+        tooltip.html("<table><tr><td><b>" + d.city + "</b></td></tr><tr><td>" + d.date + "</td></tr><tr><td>" + d.date + "</td></tr></table>");
+    });
+
+    d3NodeManager.setAction('mousemove', (d) => {
+        tooltip.style("top", (event.pageY-40)+"px")
+                .style("left",(event.pageX)+"px")
+    });
+
+    d3NodeManager.setAction('mouseout', (d) => {		
+        tooltip.transition()		
+                .duration(0)		
+                .style("opacity", 0)	
+    });
+
     // update = Tick-Funktion der Simulation
     sim.update(() => {
         d3NodeManager.update();

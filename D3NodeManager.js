@@ -20,22 +20,7 @@ class D3NodeManager{
         
         u.enter()
             .append(this.className)
-            .merge(u)
-            .on('mouseover', (d) => {
-                tooltip.transition()        
-                        .duration(200)      
-                        .style("opacity", 1);
-                tooltip.html("<table><tr><td><b>" + d.city + "</b></td></tr><tr><td>" + d.date + "</td></tr><tr><td>" + d.date + "</td></tr></table>");
-            })
-            .on('mousemove', (d) => {
-                tooltip.style("top", (event.pageY-40)+"px")
-                        .style("left",(event.pageX)+"px")
-            })
-            .on('mouseout', (d) => {		
-                tooltip.transition()		
-                        .duration(0)		
-                        .style("opacity", 0)	
-            })
+            .merge(u);
 
 
         for(let attribute of this.attr){
@@ -64,7 +49,7 @@ class D3NodeManager{
     }
 
     setAction(event, listener){
-        this.actions = [{event, listener}];
+        this.actions.push({event, listener});
     }
 
     toggleRadiusType(){
