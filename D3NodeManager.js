@@ -70,7 +70,8 @@ class D3NodeManager{
             this.actualAttr = newAttr;
         } 
         this.dataNodes = this.dataNodes.filter((d) => {
-            return getAttribute(d, this.actualAttr.attr);
+            const attr = getAttribute(d, this.actualAttr.attr);
+            return attr && attr > 0 && attr !== Number.MAX_SAFE_INTEGER;
         });
         initScaleSqrt(this.actualAttr,  this.dataNodes);
         this.calcRadius();
@@ -104,12 +105,12 @@ class D3NodeManager{
             let index = newDataset.findIndex((d) => d.city === data.city);
             if(index >= 0){
                 this.dataNodes[i] = {
-                    ...data,
                     ...newDataset[index],
                     x: data.x,
                     y: data.y,
                     vx: data.vx,
-                    vy: data.vy
+                    vy: data.vy,
+                    index: data.index
                 };
                 newDataset = newDataset.filter((d) => d.city !== data.city);
             }else{
