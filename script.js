@@ -51,12 +51,12 @@ function initSimulationWithNodes(){
 
 function initAttributesAndListeners(){
     d3NodeManager.setTransition('r', 100,  d => d.radius);
-    d3NodeManager.setAttr('r', d => d.radius);
-    d3NodeManager.setAttr('cx', d => d.x);
-    d3NodeManager.setAttr('cy', d => d.y);
-    d3NodeManager.setAttr('fill', d => d.color);
-    d3NodeManager.setAttr('fill-opacity', 0.6);
-    d3NodeManager.setAttr('stroke', d => d.color);
+    d3NodeManager.setAttribute('r', d => d.radius);
+    d3NodeManager.setAttribute('cx', d => d.x);
+    d3NodeManager.setAttribute('cy', d => d.y);
+    d3NodeManager.setAttribute('fill', d => d.color);
+    d3NodeManager.setAttribute('fill-opacity', 0.6);
+    d3NodeManager.setAttribute('stroke', d => d.color);
     
     // setzt Action listener 
     d3NodeManager.setAction('mouseover', (d) => {

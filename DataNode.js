@@ -7,7 +7,6 @@ class DataNode{
         return new Promise( resolve => {
                 if(cacheData && !forceReload) {
                     resolve(cacheData);
-                    //resolve(DataNode.filterAndReCalculateData(data, filter));
                 }else{
                     d3.json(path, (data) => {
                         data = data.map((d) => {
@@ -24,7 +23,6 @@ class DataNode{
     }
 
     static initColorScale() {
-        console.log(cacheDat)
         colorScale = d3.scaleOrdinal(d3.schemeCategory20c);
         cacheData.forEach(d => d.color = colorScale(d.city));
     }
@@ -70,11 +68,5 @@ class DataNode{
         return Object.keys(filteredData).map((key) => {
             return filteredData[key];
         });
-    }
-
-    static generateRandomNode(amount){
-        return Array(amount).fill(0).map(() => {
-            return { radius: (Math.random()*(51-54) + 50, 'CoolerName') };
-        })
     }
 }
