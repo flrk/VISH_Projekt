@@ -35,8 +35,9 @@ h1 {
     border-radius: 10px;
     margin-bottom: 10px;
     padding: 10px 25px;
-    border-style: solid;
-    border-color: #fc8f93; 
+    /*border-style: solid;
+    border-color: #fc8f93;*/
+    box-shadow: 1px 1px 6px 3px  rgba(226, 226, 226, 0.7); 
 }
 
 button{
@@ -63,13 +64,17 @@ button:hover{
 div.tooltip {	
     position: absolute;			
     text-align: center;			
-    padding: 2px;				
-    font: 12px sans-serif;		
-    background: #F16664;	
-    border: 0px;
+    padding: 10px;				
+    font: 10px;
     color: white;		
+    background: #F16664;	
+    border: none;
     border-radius: 8px;			
-    pointer-events: none;			
+    pointer-events: none;
+}
+
+table{
+    color: white;
 }
 
 .sliderWrapper{

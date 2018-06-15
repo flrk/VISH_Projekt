@@ -24,6 +24,7 @@ class DataNode{
     }
 
     static initColorScale() {
+        console.log(cacheDat)
         colorScale = d3.scaleOrdinal(d3.schemeCategory20c);
         cacheData.forEach(d => d.color = colorScale(d.city));
     }

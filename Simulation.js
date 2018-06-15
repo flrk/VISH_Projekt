@@ -3,7 +3,6 @@ class Simulation{
         this._chargeStrength = 5;
         this.d3 = d3;
         this.forceSimulation = null;
-
         this.frame = frame;
         this.center = center;
     }
@@ -26,10 +25,6 @@ class Simulation{
         this.forceSimulation.alphaTarget(0.4).restart();
     }
 
-    setChargeStrength(value){
-        this._chargeStrength = value; 
-    }
-
     getNodes(){
         return this.forceSimulation.nodes();
     }
@@ -37,24 +32,22 @@ class Simulation{
     getCenter(){
         return this.center;
     }
-
+    
+    // simulates the movement of the center when slider dragged
     _setCenterPoint(x, y){
         this.d3.select({})
             .transition()
             .duration(1000)
             .tween("center.move", () => {
-                //var i = d3.interpolateArray([this.center.x, this.center.y], [x,y]);
-
                 return (t) => {
-                    //var c = i(t);
-                    this.center.x = x//c[0];
-                    this.center.y = y//c[1];
+                    this.center.x = x;
+                    this.center.y = y;
                     this.applyForces();
                 };
         }); 
     }
 
-
+    // define forces for the forced simulation
     _forces(){
         const radius = (d) => {
             return d.radius + d.border;
@@ -72,7 +65,8 @@ class Simulation{
             }));
             
     }
-    //berechnet Kollision mit dem SVG Rand
+    // calculates collision with the svg frame
+    // bubbles stay inside the svg frame
     boundedBox() {
         var nodes, sizes
         var bounds

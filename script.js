@@ -17,39 +17,39 @@ loadData();
 async function loadData(){
     await DataNode.loadJSON(dataFile);
     DataNode.initColorScale();
+    //filtering data for the year 2014
     dataNodes = DataNode.filterData((d) =>(new Date(d.date).getTime() < timeJanuar2014));
+    //init scale for the absolut scaling option
     initAbsoluteRanges(DataNode.filterData((d) =>(new Date(d.date).getTime() < timeJanuar2017)));
     start();   
 }
 
 function start(){
-    initTooltip();
+    createTooltip();
     initSimulationWithNodes();
-    initAttrAndListener();
+    initAttributesAndListeners();
     initInputFields();
 }
-
-function initTooltip(){
-    tooltip = d3.select("#chartContainer")
+//creates an invisible div for showing tooltip
+function createTooltip(){
+    tooltip = d3.select(chartContainerID)
                 .append("div")	
                 .attr("class", "tooltip")               
-                .style("opacity", 0.5);
+                .style("opacity", 0);
 }
 
 function initSimulationWithNodes(){
-    // erstellt eine Simulation, mit der größe des SVG-Fensters
+    // creates d3 forced simulation with size of svg window
     sim = new Simulation(d3, simulationCenter(1), frame);
 
-    // d3Nodes enthält die visualiserung der Daten mittels d3 
-    // sogesehen die Verknüpfung der DataNodes mit d3
-    // Dem Konstruktor muss der Name des eltern-Elementes sowie der KlassenName für die Visualiserung übergeben werden
+    // instantiate the Manager of the data nodes
     d3NodeManager = new D3NodeManager(d3, 'svg', 'circle');
     
     d3NodeManager.updateDataSet(dataNodes, sim.getCenter());
     sim.createForceSimulation(d3NodeManager.getData());
 }
 
-function initAttrAndListener(){
+function initAttributesAndListeners(){
     d3NodeManager.setTransition('r', 100,  d => d.radius);
     d3NodeManager.setAttr('r', d => d.radius);
     d3NodeManager.setAttr('cx', d => d.x);
@@ -58,16 +58,16 @@ function initAttrAndListener(){
     d3NodeManager.setAttr('fill-opacity', 0.6);
     d3NodeManager.setAttr('stroke', d => d.color);
     
-   // setzt Action listener wie z.B. click
-    d3NodeManager.setAction('click', (d) => {
-        sim.applyForces();
-    });
-
+    // setzt Action listener 
     d3NodeManager.setAction('mouseover', (d) => {
+        const attr = d3NodeManager.actualAttr.attr; 
         tooltip.transition()        
                 .duration(200)      
                 .style("opacity", 1);
-        tooltip.html("<table><tr><td><b>" + d.city + "</b></td></tr><tr><td>" + d.date + "</td></tr><tr><td>" + d.date + "</td></tr></table>");
+        tooltip.html(`<table>
+                        <tr><td><b> Stadt: </b></td><td><b>${capitalizeFirstLetter(d.city)}</b></td></tr>
+                        <tr><td> Datum: </td><td>${d.date}</td></tr>
+                        <tr><td> ${capitalizeFirstLetter(attr[1])}: </td><td>${roundTo(getAttribute(d,attr))}</td></tr></table>`);
     });
 
     d3NodeManager.setAction('mousemove', (d) => {
@@ -81,7 +81,7 @@ function initAttrAndListener(){
                 .style("opacity", 0)	
     });
 
-    // update = Tick-Funktion der Simulation
+    // sets funktion for updating the data nodes in every step of the simulation
     sim.update(() => {
         d3NodeManager.update();
     });
@@ -111,42 +111,13 @@ function initInputFields(){
         d3NodeManager.updateDataSet(dataNodes, sim.getCenter());
         sim.setNodes(d3NodeManager.getData());
     },  sliderWidth);
-/*
-    createButton(buttonContainerID, "Preis", buttonConfig, () => {
-        d3NodeManager.changeRadiusFactor(scales.PRICE);
-        sim.applyForces();
-    });
-
-    createButton(buttonContainerID, "Betten", buttonConfig, () => {
-        d3NodeManager.changeRadiusFactor(scales.BEDS);
-        sim.applyForces();
-    });
-
-    createButton(buttonContainerID, "Zufriendenheit", buttonConfig, () => {
-        d3NodeManager.changeRadiusFactor(scales.STATIFICATION);
-        sim.applyForces();
-    });
-
-    createButton(buttonContainerID, "Beherbergungen", buttonConfig, () => {
-        d3NodeManager.changeRadiusFactor(scales.ACCOMMODATES);
-        sim.applyForces();
-    });
-
-    createChechbox(buttonContainerID, "Absolute?", {}, () => {
-        d3NodeManager.toggleRadiusType();
-        sim.applyForces();
-    })
-*/
-
-
-    const radioPrice = {
-        name: "Preis",
-        checked: true,
-        scale: scales.PRICE
-    }
 
     createRadio(buttonContainerID, "Attribute", [
-        radioPrice, 
+        {
+            name: "Preis",
+            checked: true,
+            scale: scales.PRICE
+        }, 
         {
             name: "Betten",
             scale: scales.BEDS
@@ -204,17 +175,15 @@ function initInputFields(){
             }
         }
     );
-
-   
 }
 
 function initSVGAndFrame(){
-    // feste größe des SVG-Fensters
+    // creates a wrapper for control buttons
     const buttonDiv = d3.select("body")
                         .select(containerID)
                         .append("div")
                         .attr("id", buttonContainerID.slice(1));
-
+    // creates a wrapper for svg
     const div = d3.select("body")
                         .select(containerID)
                         .append("div")
@@ -222,17 +191,18 @@ function initSVGAndFrame(){
 
     frame = {
         width: document.getElementById(chartContainerID.slice(1)).getBoundingClientRect().width,
-        height: 500 //document.getElementById(chartContainerID.slice(1)).getBoundingClientRect().height
+        height: 500 
     };
 
-    //fügt ein SVG dem body hinzu -> dadurch kann man die größe steuern
+    // creates svg in the wrapper with fixed size
     d3.select(chartContainerID)
-                        .append("svg")
-                        .style("margin", 0)
-                        .attr("width", frame.width)
-                        .attr("height", frame.height);
+        .append("svg")
+        .style("margin", 0)
+        .attr("width", frame.width)
+        .attr("height", frame.height);
 }
 
+// calculates the center for the forced simulation
 function simulationCenter(positionSlider){
     return {
         x: 0.1 * frame.width + positionSlider * ((frame.width - (0.2 * frame.width))/steps),

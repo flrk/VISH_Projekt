@@ -22,7 +22,6 @@ class D3NodeManager{
             .append(this.className)
             .merge(u);
 
-
         for(let attribute of this.attr){
             u.attr(attribute.type, attribute.fnc);
         }
@@ -44,7 +43,7 @@ class D3NodeManager{
         this.transitions.push({type, duration, fnc});
     }
 
-    setAttr(type, fnc){
+    setAttribute(type, fnc){
         this.attr.push({type, fnc});
     }
 
@@ -71,7 +70,7 @@ class D3NodeManager{
             this.actualAttr = newAttr;
         } 
         this.dataNodes = this.dataNodes.filter((d) => {
-            return getAttr(d, this.actualAttr.attr);
+            return getAttribute(d, this.actualAttr.attr);
         });
         initScaleSqrt(this.actualAttr,  this.dataNodes);
         this.calcRadius();
@@ -82,14 +81,13 @@ class D3NodeManager{
         data.forEach((obj) => {
             const d = JSON.parse(JSON.stringify(obj));
 
-            // für einen random radialen Startpunkt 
+            // for a random radial startpoint
             const randomAngle = Math.random()*360;
             
             const x = Math.cos(randomAngle)*(maxRadius.radiusX + 50) + center.x;
             const y = Math.sin(randomAngle)*(maxRadius.radiusY  + 50) + center.y;
 
-            // es dürfen nodes hinzugefügt werden die x,y,vx,vy und einen Index als Defined haben 
-            
+            // for every node x,y,vx,vy and index has to be defined 
             d.x = x > 0 ? x : 0;
             d.y = y > 0 ? y : 0;
             d.vx = 0;
@@ -99,7 +97,7 @@ class D3NodeManager{
             this.dataNodes.push(d);
         });
     }
-
+    // update the data for diffrent years
     updateDataSet(newDataset, center){
         const toDelete = [];
         this.dataNodes.forEach((data, i) => {

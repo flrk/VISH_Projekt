@@ -1,5 +1,5 @@
-// erstellt einen Button unter dem Parent mit dem Attr, text und click-listener
-// Values werden mittels attr angegeben also {value: "xyz"}
+
+// creates button under the parent with text, attributes and click listener 
 function createButton(parent, text, attrs, click){
     let btn = d3.select(parent).append('button');
 
@@ -11,7 +11,7 @@ function createButton(parent, text, attrs, click){
     btn.on('click', click);
 }
 
-// genauso wie bei dem Button
+// creates slider under the parent with text, attributes,slide listener and a fixed width
 function createSlider(parent, text, attrs, onSlide, width){
     let slider = d3.select(parent)
                     .append('input')
@@ -21,17 +21,13 @@ function createSlider(parent, text, attrs, onSlide, width){
     Object.keys(attrs).forEach((key) => {
         slider.attr(key, attrs[key]);
     });
-
-     //slider.text(text);
-     slider.on('input', onSlide);
-
-
-
+     
+    slider.on('input', onSlide);
+    
     let wrapper = d3.select(parent)
     .append('div')
     .attr('class', 'sliderWrapper')
-    .style('width', width);
-    
+    .style('width', width);    
 
     wrapper.append('span')
             .text('2014');
@@ -51,7 +47,6 @@ function createChechbox(parent, text, attrs, listener){
     .append('label')
     .property('for', 'test')
     .text(text);
-
     
     let checkBox = d3.select(parent)
     .append('input')
