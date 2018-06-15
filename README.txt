@@ -21,5 +21,6 @@ change scaling factor to absolute or relative
 ++Used visualization techniques++
 attribute encoding through Size/Scale
 colormapping for cities and tracability
+timetravel via centerpoint movement
 
 
