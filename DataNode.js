@@ -37,6 +37,14 @@ class DataNode{
                 if(!acc[crr.city]){
                     acc[crr.city] = JSON.parse(JSON.stringify(crr));
                 }else{
+                    const timestampDate = new Date(acc[crr.city].date).getTime();
+                    const timestampNewDate = new Date(crr.date).getTime();
+                    if(timestampDate < timestampNewDate) acc[crr.city].date =  acc[crr.city] = JSON.parse(JSON.stringify(crr));
+                }
+                /*
+                if(!acc[crr.city]){
+                    acc[crr.city] = JSON.parse(JSON.stringify(crr));
+                }else{
                     let keys = Object.keys(crr.min);
                     for(let key of keys){
                         if(acc[crr.city].min[key] > crr.min[key]) acc[crr.city].min[key]  = crr.min[key];
@@ -66,7 +74,7 @@ class DataNode{
                     const timestampNewDate = new Date(crr.date).getTime();
                     if(timestampDate < timestampNewDate) acc[crr.city].date = crr.date;
 
-                }
+                }*/
                 return acc;
             }, {});
 

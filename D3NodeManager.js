@@ -12,6 +12,9 @@ class D3NodeManager{
         
     }
 
+    // gets called in every step of the force simulation
+    // updates the position, size and animation of the nodes
+    // attaches listener
     update(){
         let u = this.d3
             .select(this.containerName)
